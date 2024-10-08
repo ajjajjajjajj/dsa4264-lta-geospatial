@@ -3,3 +3,5 @@ requests
 matplotlib
 streamlit
 folium
+streamlit-folium
+xlrd
