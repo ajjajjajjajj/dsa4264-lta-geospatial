@@ -1,26 +1,43 @@
+import json
 import logging
 import os
 
 import geopandas as gpd
 import pandas as pd
+import streamlit as st
 
 DATA_FOLDER = os.path.join("data", "cleaned")
+DTYPE_FOLDER = os.path.join("data", "cleaned", "dtypes")
 
 
-def load_data_sources(folder=DATA_FOLDER):
+@st.cache_data
+def get_data_collection(folder=DATA_FOLDER):
     """
     Load all the data sources in the given folder.
     """
-    data_sources = {}
+    data_collection = {}
+
     for file in os.listdir(folder):
+        if "dtypes" in file:
+            continue
+
         print(f"Loading data ({file})...")
         file_path = os.path.join(folder, file)
         file_name, file_ext = os.path.splitext(file)
 
+        dtype_file_path = os.path.join(DTYPE_FOLDER, f"{file_name}.json")
+        dtypes = None
+        if os.path.exists(dtype_file_path):
+            with open(dtype_file_path, "r") as f:
+                dtypes = json.load(f)
+
         if file_ext == ".csv":
-            data_sources[file_name] = pd.read_csv(file_path)
+            if dtypes:
+                data_collection[file_name] = pd.read_csv(file_path, dtype=dtypes)
+            else:
+                data_collection[file_name] = pd.read_csv(file_path)
         elif file_ext == ".geojson":
-            data_sources[file_name] = gpd.read_file(file_path)
+            data_collection[file_name] = gpd.read_file(file_path)
         elif file_ext == ".json":
             json_readers = [
                 lambda: pd.read_json(file_path),
@@ -28,7 +45,10 @@ def load_data_sources(folder=DATA_FOLDER):
             ]
             for reader in json_readers:
                 try:
-                    data_sources[file_name] = reader()
+                    if dtypes:
+                        data_collection[file_name] = reader().astype(dtypes)
+                    else:
+                        data_collection[file_name] = reader()
                     break
                 except ValueError:
                     continue
@@ -36,7 +56,7 @@ def load_data_sources(folder=DATA_FOLDER):
                 raise ValueError(f"File type not supported: {file}")
         else:
             raise ValueError(f"File type not supported: {file}")
-    return data_sources
+    return data_collection
 
 
 def get_rail_station_line_color(stn_code):
@@ -76,16 +96,38 @@ def get_bus_routes(data: pd.DataFrame) -> list:
     return data["ServiceNo"].sort_values().unique().tolist()
 
 
-def get_filtered_data(data, filters):
+def left_join_datasets(
+    left: pd.DataFrame,
+    right: pd.DataFrame,
+    left_on: str,
+    right_on: str,
+) -> pd.DataFrame:
     """
-    Apply filters to the data.
+    Join two datasets on the given columns.
+    """
+    return left.merge(right, left_on=left_on, right_on=right_on)
+
+
+@st.cache_data
+def filter_single_dataset(
+    _dataset: pd.DataFrame, filter_name: str, filter_value
+) -> pd.DataFrame:
+    """
+    Apply a single filter to a dataset.
+    """
+    logging.debug(f"Applying filter: {filter_name} == {filter_value}")
+    return _dataset[_dataset[filter_name] == filter_value]
+
+
+@st.cache_data
+def filter_data(_data_collection: dict, filters: dict) -> dict:
+    """
+    Filter the data based on the given filters.
     """
     filtered_data = {}
-    for dataset_name, filters in filters.items():
-        dataset = data[dataset_name]
-        logging.debug(f"Applying filters to {dataset_name}: {filters}")
-
-        for filter_name, filter_value in filters.items():
-            filtered_data[dataset_name] = dataset[dataset[filter_name] == filter_value]
-
+    for dataset_name, dataset in _data_collection.items():
+        logging.debug(f"Filtering {dataset_name}...")
+        for filter_name, filter_value in filters.get(dataset_name, {}).items():
+            dataset = filter_single_dataset(dataset, filter_name, filter_value)
+        filtered_data[dataset_name] = dataset
     return filtered_data

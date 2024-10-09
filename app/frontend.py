@@ -3,14 +3,6 @@ import geopandas as gpd
 import pandas as pd
 from backend import get_rail_station_line_color
 
-# def get_map(data):
-#     """
-#     Create a base map with rail station markers.
-#     """
-#     map_obj = get_base_map()
-#     map_obj = add_rail_layer(map_obj, data["RailStationsMerged"])
-#     return map_obj
-
 
 def get_base_map():
     """Map centred in Singapore."""
