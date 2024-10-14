@@ -138,3 +138,48 @@ if "is_initialised" not in st.session_state:
 
 show_controls()
 show_map()
+
+"""For MRT-Busstop"""
+# Load the data
+rail_stations_projected, bus_stops_projected, rail_stations, bus_stops = backend.load_data(get_data()["RailStationsMerged"], get_data()["BusStops"])
+
+
+# Streamlit app setup
+st.title("Singapore MRT Station and Bus Stops")
+
+# Split the page into two columns: Map on the left, Bus stop data on the right
+left_column, right_column = st.columns([2, 1])  # Wider map (2/3 width) and narrower table (1/3 width)
+
+with left_column:
+    # Select a train station from the dropdown
+    station_name = st.selectbox("Select a Train Station", rail_stations['StationName'].unique())
+
+    # Add a distance slider to select the radius
+    distance_radius = st.slider(
+        "Select distance radius (in meters) to find nearby bus stops:",
+        min_value=100,
+        max_value=500,
+        value=250,
+        step=50
+    )
+
+    # Find bus stops within the selected radius
+    error_message, nearby_bus_stops = backend.find_bus_stops_within_radius(
+        station_name, distance_radius, rail_stations_projected, bus_stops_projected
+    )
+
+    # Plot the station and bus stops on the map
+    if error_message:
+        st.write(error_message)
+    else:
+        map_obj = frontend.plot_station_with_bus_stops(station_name, rail_stations, bus_stops, nearby_bus_stops)
+        st_folium(map_obj, width=800, height=600)
+
+with right_column:
+    st.subheader(f"Bus Stops within {distance_radius} meters of {station_name}")
+    
+    # Display bus stops information along with distances
+    if nearby_bus_stops is not None and not nearby_bus_stops.empty:
+        st.write(nearby_bus_stops[['BUS_STOP_N', 'LOC_DESC', 'Distance (m)']].sort_values(by='Distance (m)'))
+    else:
+        st.write("No bus stops found within the specified radius.")

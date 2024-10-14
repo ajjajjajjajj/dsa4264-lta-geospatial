@@ -131,3 +131,36 @@ def filter_data(_data_collection: dict, filters: dict) -> dict:
             dataset = filter_single_dataset(dataset, filter_name, filter_value)
         filtered_data[dataset_name] = dataset
     return filtered_data
+
+
+def load_data(rail_stations, bus_stops):
+    
+    # Reproject both GeoDataFrames to the projected CRS for distance calculations
+    rail_stations_projected = rail_stations.to_crs(3857)
+    bus_stops_projected = bus_stops.to_crs(3857)
+
+    return rail_stations_projected, bus_stops_projected, rail_stations, bus_stops
+
+@st.cache_data
+def find_bus_stops_within_radius(station_name, radius_meters, _rail_stations_gdf, _bus_stops_gdf):
+    """
+    Find bus stops within the specified radius (in meters) from a given MRT station and return distances.
+    """
+    # Get the geometry for the given station
+    station = _rail_stations_gdf[_rail_stations_gdf['StationName'].str.lower() == station_name.lower()]
+    
+    if station.empty:
+        return f"Station '{station_name}' not found.", None
+    
+    station_geom = station.geometry.iloc[0]
+
+    # Compute the distance from the station to all bus stops (in meters)
+    distances = _bus_stops_gdf.distance(station_geom)
+
+    # Filter bus stops within the specified radius
+    nearby_bus_stops = _bus_stops_gdf[distances <= radius_meters].copy()
+
+    # Add the distance to the resulting bus stops DataFrame
+    nearby_bus_stops['Distance (m)'] = distances[distances <= radius_meters]
+
+    return None, nearby_bus_stops
