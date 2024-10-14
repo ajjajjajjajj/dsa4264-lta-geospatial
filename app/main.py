@@ -151,8 +151,20 @@ st.title("Singapore MRT Station and Bus Stops")
 left_column, right_column = st.columns([2, 1])  # Wider map (2/3 width) and narrower table (1/3 width)
 
 with left_column:
-    # Select a train station from the dropdown
-    station_name = st.selectbox("Select a Train Station", rail_stations['StationName'].unique())
+    rail_lines = ["Not selected"] + backend.get_rail_lines(
+        get_data()["RailStationsMerged"]
+    )
+    chosen_rail_line = st.selectbox(
+        "Station Line",
+        rail_lines,
+        index=0,
+        on_change=update_filters,
+        args=("RailStationsMerged", "StationLine"),
+        key="RailStations_StationLine_selectbox",
+    )
+    # Filter stations based on the selected line
+    filtered_stations = rail_stations[rail_stations['StationLine'] == chosen_rail_line]
+    station_name = st.selectbox("Select a Train Station", filtered_stations['StationName'].unique())
 
     # Add a distance slider to select the radius
     distance_radius = st.slider(
