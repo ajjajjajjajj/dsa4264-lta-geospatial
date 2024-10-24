@@ -1,0 +1,250 @@
+StationName,StationCode,StationLine
+Choa Chu Kang,BP1,Bukit Panjang LRT
+Fajar,BP10,Bukit Panjang LRT
+Segar,BP11,Bukit Panjang LRT
+Jelapang,BP12,Bukit Panjang LRT
+Senja,BP13,Bukit Panjang LRT
+South View,BP2,Bukit Panjang LRT
+Keat Hong,BP3,Bukit Panjang LRT
+Teck Whye,BP4,Bukit Panjang LRT
+Phoenix,BP5,Bukit Panjang LRT
+Bukit Panjang,BP6,Bukit Panjang LRT
+Petir,BP7,Bukit Panjang LRT
+Pending,BP8,Bukit Panjang LRT
+Bangkit,BP9,Bukit Panjang LRT
+Dhoby Ghaut,CC1,Circle
+Macpherson,CC10,Circle
+Tai Seng,CC11,Circle
+Bartley,CC12,Circle
+Serangoon,CC13,Circle
+Lorong Chuan,CC14,Circle
+Bishan,CC15,Circle
+Marymount,CC16,Circle
+Caldecott,CC17,Circle
+Bukit Brown,CC18,Circle
+Botanic Gardens,CC19,Circle
+Bras Basah,CC2,Circle
+Farrer Road,CC20,Circle
+Holland Village,CC21,Circle
+Buona Vista,CC22,Circle
+one-north,CC23,Circle
+Kent Ridge,CC24,Circle
+Haw Par Villa,CC25,Circle
+Pasir Panjang,CC26,Circle
+Labrador Park,CC27,Circle
+Telok Blangah,CC28,Circle
+Harbourfront,CC29,Circle
+Esplanade,CC3,Circle
+Keppel,CC30,Circle
+Cantonment,CC31,Circle
+Prince Edward Road,CC32,Circle
+Promenade,CC4,Circle
+Nicoll Highway,CC5,Circle
+Stadium,CC6,Circle
+Mountbatten,CC7,Circle
+Dakota,CC8,Circle
+Paya Lebar,CC9,Circle
+Bayfront,CE1,Circle
+Marina Bay,CE2,Circle
+Expo,CG1,East-West
+Changi Airport,CG2,East-West
+Punggol,CP4,Cross Island
+Tavistock,CR10,Cross Island
+Teck Ghee,CR12,Cross Island
+Aviation Park,CR2,Cross Island
+Loyang,CR3,Cross Island
+Pasir Ris East,CR4,Cross Island
+Tampines North,CR6,Cross Island
+Defu,CR7,Cross Island
+Sengkang,CR8,Cross Island
+Serangoon North,CR9,Cross Island
+Bukit Panjang,DT1,Downtown
+Stevens,DT10,Downtown
+Newton,DT11,Downtown
+Little India,DT12,Downtown
+Rochor,DT13,Downtown
+Bugis,DT14,Downtown
+Promenade,DT15,Downtown
+Bayfront,DT16,Downtown
+Telok Ayer,DT18,Downtown
+Chinatown,DT19,Downtown
+Cashew,DT2,Downtown
+Bencoolen,DT21,Downtown
+Jalan Besar,DT22,Downtown
+Bendemeer,DT23,Downtown
+Geylang Bahru,DT24,Downtown
+Mattar,DT25,Downtown
+Macpherson,DT26,Downtown
+Ubi,DT27,Downtown
+Kaki Bukit,DT28,Downtown
+Bedok North,DT29,Downtown
+Hillview,DT3,Downtown
+Bedok Reservoir,DT30,Downtown
+Tampines West,DT31,Downtown
+Tampines,DT32,Downtown
+Tampines East,DT33,Downtown
+Upper Changi,DT34,Downtown
+Expo,DT35,Downtown
+Xilin,DT36,Downtown
+Sungei Bedok,DT37,Downtown
+Hume,DT4,Downtown
+Beauty World,DT5,Downtown
+King Albert Park,DT6,Downtown
+Sixth Avenue,DT7,Downtown
+Tan Kah Kee,DT8,Downtown
+Botanic Gardens,DT9,Downtown
+Pasir Ris,EW1,East-West
+Kallang,EW10,East-West
+Lavender,EW11,East-West
+Bugis,EW12,East-West
+City Hall,EW13,East-West
+Raffles Place,EW14,East-West
+Tanjong Pagar,EW15,East-West
+Outram Park,EW16,East-West
+Tiong Bahru,EW17,East-West
+Redhill,EW18,East-West
+Queenstown,EW19,East-West
+Tampines,EW2,East-West
+Commonwealth,EW20,East-West
+Buona Vista,EW21,East-West
+Dover,EW22,East-West
+Clementi,EW23,East-West
+Jurong East,EW24,East-West
+Chinese Garden,EW25,East-West
+Lakeside,EW26,East-West
+Boon Lay,EW27,East-West
+Pioneer,EW28,East-West
+Joo Koon,EW29,East-West
+Simei,EW3,East-West
+Gul Circle,EW30,East-West
+Tuas Crescent,EW31,East-West
+Tuas West Road,EW32,East-West
+Tuas Link,EW33,East-West
+Tanah Merah,EW4,East-West
+Bedok,EW5,East-West
+Kembangan,EW6,East-West
+Eunos,EW7,East-West
+Paya Lebar,EW8,East-West
+Aljunied,EW9,East-West
+Tengah Plantation,JE1,Jurong Region
+Tengah Park,JE2,Jurong Region
+Bukit Batok West,JE3,Jurong Region
+Toh Guan,JE4,Jurong Region
+Jurong Town Hall,JE6,Jurong Region
+Pandan Reservoir,JE7,Jurong Region
+Tukang,JS10,Jurong Region
+Jurong Hill,JS11,Jurong Region
+Jurong Pier,JS12,Jurong Region
+Choa Chu Kang West,JS2,Jurong Region
+Tengah,JS3,Jurong Region
+Hong Kah,JS4,Jurong Region
+Corporation,JS5,Jurong Region
+Jurong West,JS6,Jurong Region
+Bahar Junction,JS7,Jurong Region
+Enterprise,JS9,Jurong Region
+Gek Poh,JW1,Jurong Region
+Tawas,JW2,Jurong Region
+Nanyang Gateway,JW3,Jurong Region
+Nanyang Crescent,JW4,Jurong Region
+Peng Kang Hill,JW5,Jurong Region
+Harbourfront,NE1,North-East
+Potong Pasir,NE10,North-East
+Woodleigh,NE11,North-East
+Serangoon,NE12,North-East
+Kovan,NE13,North-East
+Hougang,NE14,North-East
+Buangkok,NE15,North-East
+Sengkang,NE16,North-East
+Punggol,NE17,North-East
+Punggol Coast,NE18,North-East
+Outram Park,NE3,North-East
+Chinatown,NE4,North-East
+Clarke Quay,NE5,North-East
+Dhoby Ghaut,NE6,North-East
+Little India,NE7,North-East
+Farrer Park,NE8,North-East
+Boon Keng,NE9,North-East
+Jurong East,NS1,North-South
+Admiralty,NS10,North-South
+Sembawang,NS11,North-South
+Canberra,NS12,North-South
+Yishun,NS13,North-South
+Khatib,NS14,North-South
+Yio Chu Kang,NS15,North-South
+Ang Mo Kio,NS16,North-South
+Bishan,NS17,North-South
+Braddell,NS18,North-South
+Toa Payoh,NS19,North-South
+Bukit Batok,NS2,North-South
+Novena,NS20,North-South
+Newton,NS21,North-South
+Orchard,NS22,North-South
+Somerset,NS23,North-South
+Dhoby Ghaut,NS24,North-South
+City Hall,NS25,North-South
+Raffles Place,NS26,North-South
+Marina Bay,NS27,North-South
+Marina South Pier,NS28,North-South
+Bukit Gombak,NS3,North-South
+Choa Chu Kang,NS4,North-South
+Yew Tee,NS5,North-South
+Kranji,NS7,North-South
+Marsiling,NS8,North-South
+Woodlands,NS9,North-South
+Cove,PE1,Punggol LRT
+Meridian,PE2,Punggol LRT
+Coral Edge,PE3,Punggol LRT
+Riviera,PE4,Punggol LRT
+Kadaloor,PE5,Punggol LRT
+Oasis,PE6,Punggol LRT
+Damai,PE7,Punggol LRT
+Punggol,PTC,Punggol LRT
+Sam Kee,PW1,Punggol LRT
+Teck Lee,PW2,Punggol LRT
+Punggol Point,PW3,Punggol LRT
+Samudera,PW4,Punggol LRT
+Nibong,PW5,Punggol LRT
+Sumang,PW6,Punggol LRT
+Soo Teck,PW7,Punggol LRT
+Compassvale,SE1,Sengkang LRT
+Rumbia,SE2,Sengkang LRT
+Bakau,SE3,Sengkang LRT
+Kangkar,SE4,Sengkang LRT
+Ranggung,SE5,Sengkang LRT
+Sengkang,STC,Sengkang LRT
+Cheng Lim,SW1,Sengkang LRT
+Farmway,SW2,Sengkang LRT
+Kupang,SW3,Sengkang LRT
+Thanggam,SW4,Sengkang LRT
+Fernvale,SW5,Sengkang LRT
+Layar,SW6,Sengkang LRT
+Tongkang,SW7,Sengkang LRT
+Renjong,SW8,Sengkang LRT
+Woodlands North,TE1,Thomson East Coast
+Mount Pleasant,TE10,Thomson East Coast
+Stevens,TE11,Thomson East Coast
+Napier,TE12,Thomson East Coast
+Orchard,TE14,Thomson East Coast
+Great World,TE15,Thomson East Coast
+Havelock,TE16,Thomson East Coast
+Outram Park,TE17,Thomson East Coast
+Shenton Way,TE19,Thomson East Coast
+Woodlands,TE2,Thomson East Coast
+Marina Bay,TE20,Thomson East Coast
+Gardens By The Bay,TE22,Thomson East Coast
+Founders' Memorial,TE22A,Thomson East Coast
+Tanjong Rhu,TE23,Thomson East Coast
+Katong Park,TE24,Thomson East Coast
+Tanjong Katong,TE25,Thomson East Coast
+Marine Parade,TE26,Thomson East Coast
+Marine Terrace,TE27,Thomson East Coast
+Siglap,TE28,Thomson East Coast
+Bayshore,TE29,Thomson East Coast
+Woodlands South,TE3,Thomson East Coast
+Bedok South,TE30,Thomson East Coast
+Springleaf,TE4,Thomson East Coast
+Lentor,TE5,Thomson East Coast
+Mayflower,TE6,Thomson East Coast
+Bright Hill,TE7,Thomson East Coast
+Upper Thomson,TE8,Thomson East Coast
+Caldecott,TE9,Thomson East Coast
