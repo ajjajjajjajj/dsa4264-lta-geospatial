@@ -5,3 +5,4 @@ streamlit
 folium
 streamlit-folium
 xlrd
+scikit-learn
