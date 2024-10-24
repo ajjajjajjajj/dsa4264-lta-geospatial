@@ -1,0 +1,8 @@
+geopandas
+requests
+matplotlib
+streamlit
+folium
+streamlit-folium
+xlrd
+scikit-learn
