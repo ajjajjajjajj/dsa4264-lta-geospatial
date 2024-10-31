@@ -1,0 +1,6 @@
+{
+    "BUS_STOP_N": "int64",
+    "BUS_ROOF_N": "object",
+    "LOC_DESC": "object",
+    "geometry": "geometry"
+}
