@@ -253,4 +253,8 @@ def get_hour_count_below_25th_percentile_each_stop(
         .reset_index()
     )
 
+    num_hours_below_25th_by_service_stop["Destination_StopSequence"] = (
+        num_hours_below_25th_by_service_stop["Destination_StopSequence"].astype(int)
+    )
+
     return num_hours_below_25th_by_service_stop, total_num_stops

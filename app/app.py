@@ -6,6 +6,7 @@ from streamlit_folium import st_folium
 import backend
 import json
 import os
+import altair as alt
 
 st.set_page_config(layout="wide")
 
@@ -253,11 +254,52 @@ def plot2_get_bus_stop_hourly_count(service_no: str):
             DATA_COLLECTION, service_no
         )
     else:
-        return pd.DataFrame(
-            columns=["Destination_StopSequence", "DAY_TYPE", "Total_Hour_Count"]
+        return (
+            pd.DataFrame(
+                columns=["Destination_StopSequence", "DAY_TYPE", "Total_Hour_Count"]
+            ),
+            0,
         )
     print(f"Got hourly count for {total_num_stops} stops")
-    return df
+    return df, total_num_stops
+
+
+def plot2_get_percent_exceeding(hour_counts, total_num_stops, threshold):
+
+    if total_num_stops == 0:
+        return ""
+
+    weekday_data = hour_counts[hour_counts["DAY_TYPE"] == "WEEKDAY"]
+    num_hours_low_ridership_weekday = weekday_data.shape[0]
+    exceeding_sequences_weekday = weekday_data[
+        weekday_data["Total_Hour_Count"] > threshold
+    ].shape[0]
+    percentage_exceed_weekday = (
+        (exceeding_sequences_weekday / total_num_stops) * 100
+        if num_hours_low_ridership_weekday
+        else 0
+    )
+    # weekday_out = f"Percentage of stop sequences exceeding {threshold} (weekday): {percentage_exceed_weekday:.2f}%"
+
+    weekend_data = hour_counts[hour_counts["DAY_TYPE"] == "WEEKENDS/HOLIDAY"]
+    num_hours_low_ridership_weekend = weekend_data.shape[0]
+    exceeding_sequences_weekend = weekend_data[
+        weekend_data["Total_Hour_Count"] > threshold
+    ].shape[0]
+    percentage_exceed_weekend = (
+        (exceeding_sequences_weekend / total_num_stops) * 100
+        if num_hours_low_ridership_weekend
+        else 0
+    )
+    # weekend_out = f"Percentage of stop sequences exceeding {threshold} (weekend): {percentage_exceed_weekend:.2f}%"
+
+    output = (
+        f"% of bus stops with over {threshold} hours of low ridership, out of {total_num_stops} stops:  \n"
+        f"{percentage_exceed_weekday:.2f}% (weekday)  \n"
+        f"{percentage_exceed_weekend:.2f}% (weekend)  \n"
+    )
+
+    return output
 
 
 # for whole app
@@ -267,10 +309,7 @@ init_session()
 init_plot1_vars()
 
 with st.container():
-    # Create two columns
-    col1, col2 = st.columns([1, 3])
-
-    # Place rail_line_filter in the left column
+    col1, col2 = st.columns(2)
     with col1:
         rail_line_filter = create_filter_multiselect_list(
             "RailStationsMerged", "StationLine", label="Station Line"
@@ -279,9 +318,42 @@ with st.container():
             "BusRoutes", "ServiceNo", label="Bus Route"
         )
 
-    # Place everything else in the right column
-    with col2:
+        st.markdown("### Number of low-ridership hours for each bus stop")
 
+        plot2_df, total_num_stops = plot2_get_bus_stop_hourly_count(
+            st.session_state.filters["BusRoutes"].get("ServiceNo")
+        )
+
+        # Create Altair scatter plot
+        scatter_plot = (
+            alt.Chart(plot2_df)
+            .mark_circle(size=60)
+            .encode(
+                x=alt.X(
+                    "Destination_StopSequence", title="Bus Stop Sequence along Route"
+                ),
+                y=alt.Y("Total_Hour_Count", title="Number of Low Ridership Hours"),
+                color="DAY_TYPE",
+                tooltip=["Destination_StopSequence", "Total_Hour_Count", "DAY_TYPE"],
+            )
+            .properties(width=800, height=600)
+        )
+
+        # add threshold line if there are stops
+        if total_num_stops:
+            hline = (
+                alt.Chart(pd.DataFrame({"y": [8]})).mark_rule(color="red").encode(y="y")
+            )
+            scatter_plot = scatter_plot + hline
+
+        st.altair_chart(scatter_plot)
+
+        text_display = plot2_get_percent_exceeding(plot2_df, total_num_stops, 8)
+
+        st.markdown(text_display)
+
+    with col2:
+        st.markdown("### Map Overview")
         plot1 = folium.Map(location=CENTER_START, zoom_start=ZOOM_START)
 
         plot1_rail_polylines = folium.FeatureGroup(name="MRT Lines")
@@ -302,22 +374,10 @@ with st.container():
         plot1_data = st_folium(
             plot1,
             use_container_width=True,
-            height=700,
+            height=800,
             feature_group_to_add=[
                 plot1_rail_polylines,
                 plot1_rail_layer,
                 plot1_bus_layer,
             ],
         )
-        st.write("akjfnr")
-
-plot2 = st.scatter_chart(
-    data=plot2_get_bus_stop_hourly_count(
-        st.session_state.filters["BusRoutes"].get("ServiceNo")
-    ),
-    x="Destination_StopSequence",
-    y="Total_Hour_Count",
-    color="DAY_TYPE",
-    width=800,
-    height=600,
-)
