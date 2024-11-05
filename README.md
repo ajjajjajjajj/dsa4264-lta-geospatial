@@ -19,5 +19,5 @@ streamlit --version
 In the repo root directory, run the following:
 
 ```
-streamlit run app/main.py
+streamlit run app/app.py
 ```

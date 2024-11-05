@@ -1,0 +1,14 @@
+{
+    "ServiceNo": "object",
+    "Operator": "object",
+    "Direction": "int64",
+    "StopSequence": "int64",
+    "BusStopCode": "int64",
+    "Distance": "float64",
+    "WD_FirstBus": "object",
+    "WD_LastBus": "object",
+    "SAT_FirstBus": "object",
+    "SAT_LastBus": "object",
+    "SUN_FirstBus": "object",
+    "SUN_LastBus": "object"
+}
