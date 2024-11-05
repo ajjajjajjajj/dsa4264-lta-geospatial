@@ -49,7 +49,6 @@ def get_data_collection(folder=DATA_FOLDER):
             data_collection[file_name] = gpd.read_file(file_path)
 
             if file == "RailLineStrings.geojson":
-                data_collection[file_name] = data_collection[file_name].to_crs(3857)
                 data_collection[file_name]["StationNames"] = data_collection[file_name][
                     "StationNames"
                 ].apply(ast.literal_eval)

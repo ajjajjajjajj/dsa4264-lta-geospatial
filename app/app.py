@@ -370,7 +370,10 @@ with st.container():
             st.session_state.filters["RailStationsMerged"].get("StationLine")
         ):
             marker.add_to(plot1_rail_layer)
-
+        st.markdown(
+            "<small>LRT and Cross Island Line are excluded. </small>",
+            unsafe_allow_html=True,
+        )
         plot1_data = st_folium(
             plot1,
             use_container_width=True,
