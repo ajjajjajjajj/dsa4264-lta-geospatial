@@ -685,7 +685,7 @@ Although Route 106 had the second highest score, plotting it showed that there r
 
 ![852.png](assets/route852.png)
 
-**Route 852**
+**Route 10**
 
 ![852.png](assets/route10.png)
 
