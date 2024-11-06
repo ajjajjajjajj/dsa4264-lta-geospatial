@@ -140,17 +140,18 @@ def plot1_get_bus_markers(service_no: str) -> list[folium.Marker]:
     bus_route_data = backend.left_join_datasets(
         bus_route_data, DATA_COLLECTION["BusStops"], "BusStopCode", "BUS_STOP_N"
     )
+    bus_route_data = bus_route_data[bus_route_data["Direction"] == 1]
 
     markers = []
 
     for _, row in bus_route_data.iterrows():
         service_no = row["ServiceNo"]
-        direction = row["Direction"]
+        # direction = row["Direction"]
         bus_stop_code = row["BusStopCode"]
 
         popup = frontend.create_popup_text(
             ServiceNo=service_no,
-            Direction=direction,
+            # Direction=direction,
             BusStopCode=bus_stop_code,
         )
 
@@ -253,6 +254,7 @@ def plot2_get_bus_stop_hourly_count(service_no: str):
         df, total_num_stops = backend.get_hour_count_below_25th_percentile_each_stop(
             DATA_COLLECTION, service_no
         )
+        df = df[df["DAY_TYPE"] == "WEEKDAY"]
     else:
         return (
             pd.DataFrame(
@@ -295,8 +297,8 @@ def plot2_get_percent_exceeding(hour_counts, total_num_stops, threshold):
 
     output = (
         f"% of bus stops with over {threshold} hours of low ridership, out of {total_num_stops} stops:  \n"
-        f"{percentage_exceed_weekday:.2f}% (weekday)  \n"
-        f"{percentage_exceed_weekend:.2f}% (weekend)  \n"
+        f"{percentage_exceed_weekday:.2f}%  \n"
+        # f"{percentage_exceed_weekend:.2f}% (weekend)  \n"
     )
 
     return output
@@ -333,8 +335,9 @@ with st.container():
                     "Destination_StopSequence", title="Bus Stop Sequence along Route"
                 ),
                 y=alt.Y("Total_Hour_Count", title="Number of Low Ridership Hours"),
-                color="DAY_TYPE",
-                tooltip=["Destination_StopSequence", "Total_Hour_Count", "DAY_TYPE"],
+                # color="DAY_TYPE",
+                # tooltip=["Destination_StopSequence", "Total_Hour_Count", "DAY_TYPE"],
+                tooltip=["Destination_StopSequence", "Total_Hour_Count"],
             )
             .properties(width=800, height=600)
         )

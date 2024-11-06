@@ -18,6 +18,6 @@ streamlit --version
 
 In the repo root directory, run the following:
 
-```
+``` bash
 streamlit run app/app.py
 ```
