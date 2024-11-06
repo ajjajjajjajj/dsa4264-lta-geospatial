@@ -79,7 +79,7 @@ Due to limitations in publicly available data from LTA Data Mall, the MRT line d
 
 Hence, we approximated MRT LineStrings by connecting stations in sequence, resulting in a "rigid" representation with straight segments between stations (as shown in the example image). While this approach does not capture the actual curvature of the routes, we assume that it provides a sufficiently accurate approximation for our analysis, as MRT trains typically follow a direct path between stations with minimal deviation.
 
-| <img src="assets/Circlelinerep.jpg" alt="Circle Line Representation" width="300"/> | <img src="assets/acutalcircle.jpg" alt="Actual Circle Line Representation" width="300"/> |
+| <img src="assets/circle_line.png" alt="Circle Line Representation" width="300"/> | <img src="assets/acutalcircle.jpg" alt="Actual Circle Line Representation" width="300"/> |
 |--------------------------------------------------|------------------------------------------------------|
 | *Circle Line Representation in LineStrings Data* | *Actual Representation of Circle Line.*              |
 
@@ -113,7 +113,7 @@ During our analysis of bus routes, we realised that the direction of the bus rou
 
 ![bus18.png](assets%2Fbus18.png)
 
-*Route 18 Flow*
+*Bus Service 18 route for both directions*
 
 ### 3.2 Data
 
@@ -136,7 +136,7 @@ Below is a list of raw datasets we used in our calculations with a one-liner des
 | MasterPlan2019PlanningAreaBoundary.geojson | .geojson               | Outlines the planning area boundaries across Singapore.                                                      | **[get_data.ipynb](data%2Fget_data.ipynb)**                                                                                                       |
 | origin_destination_bus_202408.csv          | .csv                   | Provides total trip data from Bus Stop A to B.                                                               | **[get_data.ipynb](data%2Fget_data.ipynb)**                                                                                                       |
 
-#### 3.2.1 Data Cleaning, Feature Engineering:
+#### 3.2.2 Data Cleaning, Feature Engineering:
 
 ##### Part 1: Geospatial Data
 
@@ -198,7 +198,7 @@ plt.show()
 ```
 | ![geobusroutes.png](assets%2Fgeobusroutes.png) | ![bus100.png](assets%2Fbus100.png) |
 |------------------------------------------------|------------------------------------|
-| **bus_routes_geo Table**                       | **Example Line String Plot**       |
+| **bus_routes_geo Table**                       | **Example Line String Plot of Bus 10**       |
 
 **MRT Rail Lines & Station Data**
 
@@ -313,7 +313,7 @@ bus_node_df.to_csv('cleaned/BusRideVolume_2024_070809.csv', index=False)
 ```
 
 
-For the final analysis, `BusRideVolume_2024_070809.csv` but the Tap-in and Tap-out data was averaged out.
+For the final analysis, we used `BusRideVolume_2024_070809.csv` but the Tap-in and Tap-out data was averaged out.
 
 ```python
 bus_ridership_quarter = bus_ridership_quarter.rename(columns={
@@ -331,7 +331,7 @@ aggregated_ridership = bus_ridership_quarter.groupby(['DAY_TYPE', 'TIME_PER_HOUR
 
 **Trips Datasets**
 
-To fulfill the 3rd Assumption that bus frequency will accurately reflect the proportion of trips, bus origin destination data (`origin_destination_bus_202408.csv`) and `BusRoutes.json` were merged to identify total number of trips between 2 bus stops of the bus route.
+To fulfill the 3rd assumption that bus frequency will accurately reflect the proportion of trips, bus origin destination data (`origin_destination_bus_202408.csv`) and `BusRoutes.json` were merged to identify total number of trips between 2 bus stops of the bus route.
 
 | ![total_trips.png](assets%2Ftotal_trips.png) | ![busroutes.png](assets%2Fbusroutes.png) |
 |----------------------------------------------|------------------------------------------|
@@ -399,6 +399,7 @@ bus_frequency = bus_frequency.fillna(0)
 With this estimation, the frequency dataset was merged with the trips dataset to model the trips accurately in our experimentation.
 
 ![post merge.png](assets%2Fpost%20merge.png)
+
 
 ### 3.3 Experimental Design
 
@@ -519,7 +520,6 @@ Using these two perspectives allows for a more comprehensive measure of spatial 
 **Phase 3: Weighted Average Angular Deviation**  
 **Rationale:** Assess the alignment of each bus route to the MRT line by calculating angular deviation, where lower angles indicate closer alignment.  
 **Process:**
-
 1. For each MRT segment, we took the midpoint and projected it onto the bus route to find the closest corresponding point. Using these points, we formed vectors for each MRT segment and its closest bus route point.
 2. We calculated the angle between these vectors using the dot product, providing a measure of alignment for each segment.
 3. To account for each segment's influence, we took a weighted average of these angles based on segment lengths, producing a final alignment score for each bus route relative to the MRT line.
@@ -609,7 +609,7 @@ From our analysis, we realised that our hypothesis fails to match with the groun
 
 Given that there is no substantial changes, we decided to to take the 3-month average ridership data for our trip based proportional analysis.
 
-In **[03_Trip Modelling.ipynb](ridership%2F03_Trip%20Modelling.ipynb)** we incorporated the trips data from origin_destination_bus_202408.csv to identify the number of trips in an hour running between each bus stops and incorporated the bus frequency timing to model the proportion of trips taken by the bus route. Based on the merged dataset, we ran the anlaysis again in **[04_ridership_final.ipynb](ridership%2F04_ridership_final.ipynb)**.
+In **[03_Trip Modelling.ipynb](ridership%2F03_Trip%20Modelling.ipynb)** we incorporated the trips data from `origin_destination_bus_202408.csv` to identify the number of trips in an hour running between each bus stops and incorporated the bus frequency timing to model the proportion of trips taken by the bus route. Based on the merged dataset, we ran the anlaysis again in **[04_ridership_final.ipynb](ridership%2F04_ridership_final.ipynb)**.
 
 This time our results matches the hypothesis showing that trip proportion plays a vital role in modeling ridership.
 
@@ -617,7 +617,7 @@ This time our results matches the hypothesis showing that trip proportion plays 
 
 #### Merged Analysis
 
-Given the primary and secondary method, we tried to fit in a scoring system that enable us to accurately rank and identify parallel routes. Hence, on top of `Weighted_Average_Score`, we looked at following additional parameters:
+Given the primary and secondary method, we tried to fit in a scoring system that enable us to accurately rank and identify parallel routes. Overall, we looked at the following parameters to determine the final score:
 
 * **Max_Consecutive_Segments**: Indicates the number of consecutive stations on the route, aiding in the assessment of connectivity and coverage.
 * **Weighted_Average_Score**: Based on parallel routes, this score provides insights into overlapping services and potential redundancies.
@@ -652,9 +652,9 @@ merged_df_sorted = merged_df.sort_values(by='Weighted_Total_Score', ascending=Fa
 merged_df_sorted
 ```
 
-**`## Section 4: Findings`**
+## Section 4: Findings
 
-**`### 4.1 Results`**
+### 4.1 Results
 
 We identify the top 8 bus routes with the highest `Weighted_Total_Score` (the overall score including ridership). The following table shows some of the columns in our results - for a complete view refer to **[combined_analysis.ipynb](combined_analysis.ipynb)**.
 
@@ -669,6 +669,8 @@ We identify the top 8 bus routes with the highest `Weighted_Total_Score` (the ov
 | 7        | 30               | Circle         | 17.86                   | 6.0                          | 26.18                      | 19.23                         | 3.85                          | Remove             |
 | 8        | 143              | Circle         | 16.49                   | 5.0                          | 23.99                      | 16.22                         | 8.11                          | Reroute            |
 
+
+**Top 3 Bus Routes Visualisation**
 
 **Route 67**
 
