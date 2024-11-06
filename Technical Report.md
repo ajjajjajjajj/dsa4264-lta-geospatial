@@ -591,21 +591,21 @@ Based on the results, we will generate a list of bus routes and corresponding tr
 
 #### Secondary Method of Identification: Ridership Analytics
 
-For the secondary method, we examined the ridership data to identify ridership patterns and allow us to make an informed decision on whether it is appropriate to remove or modify the routes given the ridership trends.
+To add an additional dimension to our analysis and further back our recommendations, we chose to incorporate ridership as part of our analysis. To reduce the impact of our recommendations to commuters/members of public, who are one of the stakeholders, we would probably only want to remove bus routes with 'low ridership'.
 
 We started by looking at the ridership trends across different bus stops in Singapore by plotting the ridership data by time of an hour for tap-in/tap-out volume to examine its distribution.
 
 ![ridership 1.png](assets%2Fridership%201.png)
 
-From this plot, we observed the skewed nature of ridership distribution across Singapore. We selected Service 167 example, to test our hypothesis that parallel routes tend to have overall ridership below the 25th percentile.
+From this plot, we observed the skewed nature of ridership distribution across Singapore. We selected Service 167 example, to _test our hypothesis that parallel routes tend to have overall ridership below the 25th percentile_.
 
-To test our hypothesis and build a viable algorithm, we counted the number of instances of a particular bus stop in the service route 167 falls below the 25th Percentile. Then we fixed a threshold of 6 to account for the (5 am to 6 am & 7 pm to 12 am) which tends to be lower ridership during this timing.
+To test our hypothesis and build a viable algorithm, we counted the number of instances of a particular bus stop in the service route 167 falls below the 25th Percentile. Then we fixed a threshold of 6 to account for the (5am to 6am & 7pm to 12am) which tends to be lower ridership during this timing.
 
 We first tested with one month (**[01_ridership_exploration.ipynb](ridership%2F01_ridership_exploration.ipynb)**) and then applied the process to across 3 months (**[02_ridership_quarterly_analysis.ipynb](ridership%2F02_ridership_quarterly_analysis.ipynb)**) to account for any discrepancy in the data. Below is a visualisation build based on our approach.
 
 ![167 ridership.png](assets%2F167%20ridership.png)
 
-From our analysis, we realised that our hypothesis fails to match with the ground truth. Upon further investigation, we realised the issue with the dataset where the ridership volume does not account for individual routes but rather all the buses that pass through the bus stops. 
+From our analysis, we realised that our hypothesis fails to match with the ground truth. Upon further investigation, we realised the issue with the dataset where the ridership volume does not account for individual routes but rather all the buses that pass through the bus stops.
 
 Given that there is no substantial changes, we decided to to take the 3-month average ridership data for our trip based proportional analysis.
 
@@ -625,7 +625,7 @@ Given the primary and secondary method, we tried to fit in a scoring system that
 * **Weekend_Percentage_Exceed**: Measures the percentage of ridership exceeding typical weekend averages, which helps identify demand on non-work days.
 
 By adjusting the weights of these metrics, we will attempt to identify the best routes to recommend. This evaluation will be conducted in two ways:
-* 1. Ensuring that Route 167 ranks within the top 3.
+* 1. Ensuring that Route 167 ranks within the top 3, since it is a prime example of a bus route that met the criteria for LTA's original decision to remove the route
 * 2. Conducting a manual inspection with final recommendations left to group discretion.
  
 Based on these rubrics we came up with these weights that best support our assumptions and the project's scope:
@@ -656,34 +656,37 @@ merged_df_sorted
 
 **`### 4.1 Results`**
 
-Based on our final analysis we came out with the following recommendation for existing routes
+We identify the top 8 bus routes with the highest `Weighted_Total_Score` (the overall score including ridership). The following table shows some of the columns in our results - for a complete view refer to **[combined_analysis.ipynb](combined_analysis.ipynb)**.
 
-We realised that our most of the bus routes identified tend to be run through the heartlands of
+| **Rank** | **Bus Service** | **MRT Line**   | **Weighted_Total_Score** | **Max Consecutive Segments** | **Weighted Average Score (from geospatial)** | **Weekday Percentage Exceed** | **Weekend Percentage Exceed** | **Recommendation** |
+|----------|------------------|----------------|------------------------|------------------------------|----------------------------|-------------------------------|-------------------------------|--------------------|
+| 1        | 67               | Downtown       | 20.74                   | 6.0                          | 27.48                      | 30.0                          | 10.0                          | Remove             |
+| 2        | 106              | Circle         | 20.72                   | 6.0                          | 28.01                      | 27.66                         | 10.64                         | Reroute            |
+| 3        | 852              | Downtown       | 20.56                   | 7.0                          | 24.97                      | 32.65                         | 14.29                         | Remove             |
+| 4        | 167              | North-South    | 20.20                   | 5.0                          | 23.24                      | 39.44                         | 14.08                         | Remove             |
+| 5        | 10               | Circle         | 19.15                   | 7.0                          | 30.20                      | 13.51                         | 2.7                           | Reroute            |
+| 6        | 57               | Circle         | 18.02                   | 5.0                          | 27.35                      | 18.0                          | 4.0                           | Reroute            |
+| 7        | 30               | Circle         | 17.86                   | 6.0                          | 26.18                      | 19.23                         | 3.85                          | Remove             |
+| 8        | 143              | Circle         | 16.49                   | 5.0                          | 23.99                      | 16.22                         | 8.11                          | Reroute            |
 
-We identify the top 8 bus routes with the highest weighted average score for further analysis on the bus route’s ridership and note down the recommendations derived from the ridership analysis.
-
-| **Rank** | **Bus Service** | **MRT Line**   | **Max Consecutive Segments** | **Weighted Average Score** | **Weekday Percentage Exceed** | **Weekend Percentage Exceed** | **Recommendation** |
-|----------|------------------|----------------|------------------------------|----------------------------|-------------------------------|-------------------------------|--------------------|
-| 1        | 67              | Downtown       | 6.0                          | 27.48                      | 30.0                          | 10.0                          | Remove            |
-| 2        | 106             | Circle         | 6.0                          | 28.01                      | 27.66                         | 10.64                         | Reroute           |
-| 3        | 852             | Downtown       | 7.0                          | 24.97                      | 32.65                         | 14.29                         | Remove            |
-| 4        | 167             | North-South    | 5.0                          | 23.24                      | 39.44                         | 14.08                         | Remove            |
-| 5        | 10              | Circle         | 7.0                          | 30.20                      | 13.51                         | 2.7                           | Reroute           |
-| 6        | 57              | Circle         | 5.0                          | 27.35                      | 18.0                          | 4.0                           | Reroute           |
-| 7        | 30              | Circle         | 6.0                          | 26.18                      | 19.23                         | 3.85                          | Remove            |
-| 8        | 143             | Circle         | 5.0                          | 23.99                      | 16.22                         | 8.11                          | Reroute           |
 
 **Route 67**
 
-![route67.png](assets%2Froute67.png)
+![route67.png](assets/route67.png)
 
-**Route 106**
+**Route 106**  
+Although Route 106 had the second highest score, plotting it showed that there really only is a serious overlap in the Bra Basah area of CCL, and the low-ridership stops are scattered along the route instead of being in a consecutive section. Thus, we recommend rerouting instead of removing the entire route.
 
-![img.png](assets%2Fimg.png)
+![img.png](assets/route106.png)
 
 **Route 852**
 
-![852.png](assets%2F852.png)![img.png](img.png)
+![852.png](assets/route852.png)
+
+**Route 852**
+
+![852.png](assets/route10.png)
+
 
 ### 4.2 Discussion
 
@@ -703,9 +706,9 @@ However, we acknowledge that this approach has the scalability and future deploy
 
 | Rank | Bus Service | Picture                                                  |
 | :---- | :---- |:---------------------------------------------------------|
-| 1 | 199 | ![img_1.png](assets%2Fimg_1.png)                         |
-| 2 | 179 | ![179.png](assets%2F179.png)                             |
-| 3 | 181 |  ![img_2.png](assets%2Fimg_2.png)  |
+| 1 | 199 | <img src="assets/img_1.png" alt="img_1" width="600"/>                         |
+| 2 | 179 | <img src="assets/179.png" alt="179" width="600"/>                             |
+| 3 | 181 | <img src="assets/img_2.png" alt="img_2" width="600"/>  |
 
 ### 4.3 Recommendations
 
