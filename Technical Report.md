@@ -113,7 +113,7 @@ During our analysis of bus routes, we realised that the direction of the bus rou
 
 ![bus18.png](assets%2Fbus18.png)
 
-*Route 18 Flow*
+*Bus Service 18 route for both directions*
 
 ### 3.2 Data
 
@@ -136,7 +136,7 @@ Below is a list of raw datasets we used in our calculations with a one-liner des
 | MasterPlan2019PlanningAreaBoundary.geojson | .geojson               | Outlines the planning area boundaries across Singapore.                                                      | **[get_data.ipynb](data%2Fget_data.ipynb)**                                                                                                       |
 | origin_destination_bus_202408.csv          | .csv                   | Provides total trip data from Bus Stop A to B.                                                               | **[get_data.ipynb](data%2Fget_data.ipynb)**                                                                                                       |
 
-#### 3.2.1 Data Cleaning, Feature Engineering:
+#### 3.2.2 Data Cleaning, Feature Engineering:
 
 ##### Part 1: Geospatial Data
 
@@ -198,7 +198,7 @@ plt.show()
 ```
 | ![geobusroutes.png](assets%2Fgeobusroutes.png) | ![bus100.png](assets%2Fbus100.png) |
 |------------------------------------------------|------------------------------------|
-| **bus_routes_geo Table**                       | **Example Line String Plot**       |
+| **bus_routes_geo Table**                       | **Example Line String Plot of Bus 10**       |
 
 **MRT Rail Lines & Station Data**
 
@@ -313,7 +313,7 @@ bus_node_df.to_csv('cleaned/BusRideVolume_2024_070809.csv', index=False)
 ```
 
 
-For the final analysis, `BusRideVolume_2024_070809.csv` but the Tap-in and Tap-out data was averaged out.
+For the final analysis, we used `BusRideVolume_2024_070809.csv` but the Tap-in and Tap-out data was averaged out.
 
 ```python
 bus_ridership_quarter = bus_ridership_quarter.rename(columns={
@@ -331,7 +331,7 @@ aggregated_ridership = bus_ridership_quarter.groupby(['DAY_TYPE', 'TIME_PER_HOUR
 
 **Trips Datasets**
 
-To fulfill the 3rd Assumption that bus frequency will accurately reflect the proportion of trips, bus origin destination data (`origin_destination_bus_202408.csv`) and `BusRoutes.json` were merged to identify total number of trips between 2 bus stops of the bus route.
+To fulfill the 3rd assumption that bus frequency will accurately reflect the proportion of trips, bus origin destination data (`origin_destination_bus_202408.csv`) and `BusRoutes.json` were merged to identify total number of trips between 2 bus stops of the bus route.
 
 | ![total_trips.png](assets%2Ftotal_trips.png) | ![busroutes.png](assets%2Fbusroutes.png) |
 |----------------------------------------------|------------------------------------------|
@@ -399,6 +399,7 @@ bus_frequency = bus_frequency.fillna(0)
 With this estimation, the frequency dataset was merged with the trips dataset to model the trips accurately in our experimentation.
 
 ![post merge.png](assets%2Fpost%20merge.png)
+
 
 ### 3.3 Experimental Design
 
@@ -519,7 +520,6 @@ Using these two perspectives allows for a more comprehensive measure of spatial 
 **Phase 3: Weighted Average Angular Deviation**  
 **Rationale:** Assess the alignment of each bus route to the MRT line by calculating angular deviation, where lower angles indicate closer alignment.  
 **Process:**
-
 1. For each MRT segment, we took the midpoint and projected it onto the bus route to find the closest corresponding point. Using these points, we formed vectors for each MRT segment and its closest bus route point.
 2. We calculated the angle between these vectors using the dot product, providing a measure of alignment for each segment.
 3. To account for each segment's influence, we took a weighted average of these angles based on segment lengths, producing a final alignment score for each bus route relative to the MRT line.
@@ -597,9 +597,9 @@ We started by looking at the ridership trends across different bus stops in Sing
 
 ![ridership 1.png](assets%2Fridership%201.png)
 
-From this plot, we observed the skewed nature of ridership distribution across Singapore. We selected Service 167 example, to test our hypothesis that parallel routes tend to have overall ridership below the 25th percentile.
+From this plot, we observed the skewed nature of ridership distribution across Singapore. We selected Service 167 as an example, to test our hypothesis that parallel routes tend to have overall ridership below the 25th percentile.
 
-To test our hypothesis and build a viable algorithm, we counted the number of instances of a particular bus stop in the service route 167 falls below the 25th Percentile. Then we fixed a threshold of 6 to account for the (5 am to 6 am & 7 pm to 12 am) which tends to be lower ridership during this timing.
+To test our hypothesis and build a viable algorithm, we counted the number of instances of a particular bus stop in the service route 167 falls below the 25th Percentile. Then we fixed a threshold of 6 to account for the timings (5 am to 6 am & 7 pm to 12 am) which tends to be lower ridership during this timing.
 
 We first tested with one month (**[01_ridership_exploration.ipynb](ridership%2F01_ridership_exploration.ipynb)**) and then applied the process to across 3 months (**[02_ridership_quarterly_analysis.ipynb](ridership%2F02_ridership_quarterly_analysis.ipynb)**) to account for any discrepancy in the data. Below is a visualisation build based on our approach.
 
@@ -609,7 +609,7 @@ From our analysis, we realised that our hypothesis fails to match with the groun
 
 Given that there is no substantial changes, we decided to to take the 3-month average ridership data for our trip based proportional analysis.
 
-In **[03_Trip Modelling.ipynb](ridership%2F03_Trip%20Modelling.ipynb)** we incorporated the trips data from origin_destination_bus_202408.csv to identify the number of trips in an hour running between each bus stops and incorporated the bus frequency timing to model the proportion of trips taken by the bus route. Based on the merged dataset, we ran the anlaysis again in **[04_ridership_final.ipynb](ridership%2F04_ridership_final.ipynb)**.
+In **[03_Trip Modelling.ipynb](ridership%2F03_Trip%20Modelling.ipynb)** we incorporated the trips data from `origin_destination_bus_202408.csv` to identify the number of trips in an hour running between each bus stops and incorporated the bus frequency timing to model the proportion of trips taken by the bus route. Based on the merged dataset, we ran the anlaysis again in **[04_ridership_final.ipynb](ridership%2F04_ridership_final.ipynb)**.
 
 This time our results matches the hypothesis showing that trip proportion plays a vital role in modeling ridership.
 
@@ -625,7 +625,7 @@ Given the primary and secondary method, we tried to fit in a scoring system that
 * **Weekend_Percentage_Exceed**: Measures the percentage of ridership exceeding typical weekend averages, which helps identify demand on non-work days.
 
 By adjusting the weights of these metrics, we will attempt to identify the best routes to recommend. This evaluation will be conducted in two ways:
- 1. Ensuring that our null hypothesis Route 167 ranks within the top 3.
+ 1. Ensuring that our hypothesis Route 167 ranks within the top 3.
  2. Conducting a manual inspection with final recommendations left to group discretion.
  
 Based on these rubrics we came up with these weights that best support our assumptions and the project's scope:
