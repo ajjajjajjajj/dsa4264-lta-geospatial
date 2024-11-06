@@ -79,7 +79,7 @@ Due to limitations in publicly available data from LTA Data Mall, the MRT line d
 
 Hence, we approximated MRT LineStrings by connecting stations in sequence, resulting in a "rigid" representation with straight segments between stations (as shown in the example image). While this approach does not capture the actual curvature of the routes, we assume that it provides a sufficiently accurate approximation for our analysis, as MRT trains typically follow a direct path between stations with minimal deviation.
 
-| <img src="assets/Circlelinerep.jpg" alt="Circle Line Representation" width="300"/> | <img src="assets/acutalcircle.jpg" alt="Actual Circle Line Representation" width="300"/> |
+| <img src="assets/circle_line.png" alt="Circle Line Representation" width="300"/> | <img src="assets/acutalcircle.jpg" alt="Actual Circle Line Representation" width="300"/> |
 |--------------------------------------------------|------------------------------------------------------|
 | *Circle Line Representation in LineStrings Data* | *Actual Representation of Circle Line.*              |
 
