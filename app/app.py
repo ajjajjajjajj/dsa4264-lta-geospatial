@@ -342,16 +342,20 @@ with st.container():
             .properties(width=800, height=600)
         )
 
+        threshold = 6
+
         # add threshold line if there are stops
         if total_num_stops:
             hline = (
-                alt.Chart(pd.DataFrame({"y": [8]})).mark_rule(color="red").encode(y="y")
+                alt.Chart(pd.DataFrame({"y": [threshold]}))
+                .mark_rule(color="red")
+                .encode(y="y")
             )
             scatter_plot = scatter_plot + hline
 
         st.altair_chart(scatter_plot)
 
-        text_display = plot2_get_percent_exceeding(plot2_df, total_num_stops, 8)
+        text_display = plot2_get_percent_exceeding(plot2_df, total_num_stops, threshold)
 
         st.markdown(text_display)
 
