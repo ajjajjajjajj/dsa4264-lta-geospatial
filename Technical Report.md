@@ -617,7 +617,7 @@ This time our results matches the hypothesis showing that trip proportion plays 
 
 #### Merged Analysis
 
-Given the primary and secondary method, we tried to fit in a scoring system that enable us to accurately rank and identify parallel routes. Hence, on top of `Weighted_Average_Score`, we looked at following additional parameters:
+Given the primary and secondary method, we tried to fit in a scoring system that enable us to accurately rank and identify parallel routes. Overall, we looked at the following parameters to determine the final score:
 
 * **Max_Consecutive_Segments**: Indicates the number of consecutive stations on the route, aiding in the assessment of connectivity and coverage.
 * **Weighted_Average_Score**: Based on parallel routes, this score provides insights into overlapping services and potential redundancies.
@@ -625,8 +625,8 @@ Given the primary and secondary method, we tried to fit in a scoring system that
 * **Weekend_Percentage_Exceed**: Measures the percentage of ridership exceeding typical weekend averages, which helps identify demand on non-work days.
 
 By adjusting the weights of these metrics, we will attempt to identify the best routes to recommend. This evaluation will be conducted in two ways:
-* 1. Ensuring that Route 167 ranks within the top 3.
-* 2. Conducting a manual inspection with final recommendations left to group discretion.
+ 1. Ensuring that our null hypothesis Route 167 ranks within the top 3.
+ 2. Conducting a manual inspection with final recommendations left to group discretion.
  
 Based on these rubrics we came up with these weights that best support our assumptions and the project's scope:
 
@@ -652,15 +652,11 @@ merged_df_sorted = merged_df.sort_values(by='Weighted_Total_Score', ascending=Fa
 merged_df_sorted
 ```
 
-**`## Section 4: Findings`**
+## Section 4: Findings
 
-**`### 4.1 Results`**
+### 4.1 Results
 
-Based on our final analysis we came out with the following recommendation for existing routes
-
-We realised that our most of the bus routes identified tend to be run through the heartlands of
-
-We identify the top 8 bus routes with the highest weighted average score for further analysis on the bus route’s ridership and note down the recommendations derived from the ridership analysis.
+Based on our final analysis, we identify the top 8 bus routes with the highest weighted average score for further analysis on the bus route’s ridership and note down the recommendations derived from the ridership analysis.
 
 | **Rank** | **Bus Service** | **MRT Line**   | **Max Consecutive Segments** | **Weighted Average Score** | **Weekday Percentage Exceed** | **Weekend Percentage Exceed** | **Recommendation** |
 |----------|------------------|----------------|------------------------------|----------------------------|-------------------------------|-------------------------------|--------------------|
@@ -672,6 +668,8 @@ We identify the top 8 bus routes with the highest weighted average score for fur
 | 6        | 57              | Circle         | 5.0                          | 27.35                      | 18.0                          | 4.0                           | Reroute           |
 | 7        | 30              | Circle         | 6.0                          | 26.18                      | 19.23                         | 3.85                          | Remove            |
 | 8        | 143             | Circle         | 5.0                          | 23.99                      | 16.22                         | 8.11                          | Reroute           |
+
+**Top 3 Bus Routes Visualisation**
 
 **Route 67**
 
